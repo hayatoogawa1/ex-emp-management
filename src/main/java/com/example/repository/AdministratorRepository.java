@@ -2,7 +2,7 @@ package com.example.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+//import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -22,7 +22,7 @@ public class AdministratorRepository {
 
         administrator.setId(rs.getInt("id"));
         administrator.setName(rs.getString("name"));
-        administrator.setMailAddress(rs.getString("email_address"));
+        administrator.setMailAddress(rs.getString("mail_address"));
         administrator.setPassword(rs.getString("password"));
 
         return administrator;
@@ -30,11 +30,16 @@ public class AdministratorRepository {
     };
     
     public void insert(Administrator administrator) {
-        SqlParameterSource param = new BeanPropertySqlParameterSource(administrator);
         
         if (administrator.getId() == null) {
             String insertSql = "INSERT INTO administrators(name,mail_address,password) VALUES(:name, :mail_address, :password)";
             
+            //SqlParameterSource param = new BeanPropertySqlParameterSource(administrator);
+            MapSqlParameterSource param = new MapSqlParameterSource();
+        param.addValue("name", administrator.getName());
+        param.addValue("mail_address", administrator.getMailAddress());
+        param.addValue("password", administrator.getPassword());
+
             template.update(insertSql, param);
         }
         
@@ -42,7 +47,7 @@ public class AdministratorRepository {
     
     public Administrator findByMailAddressAndPassword(String mailAddress, String password){
         
-        String findBySql = "SELECT * FROM administrators WHERE mail_address = :mail_address AND password = :password";
+        String findBySql = "SELECT * FROM administrators WHERE mail_address = :mailAddress AND password = :password";
         
         SqlParameterSource param = new MapSqlParameterSource().addValue("mail_address",mailAddress).addValue("password",password);
 
