@@ -26,4 +26,10 @@ public class AdministratorService {
         return repository.findByMailAddressAndPassword(mailAddress, password);
     }
 
+    public Administrator login(String mailAddress, String password){
+
+        return repository.findByMailAddressAndPassword(mailAddress, password);
+
+    }
+
 }

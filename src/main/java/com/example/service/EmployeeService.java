@@ -11,7 +11,7 @@ import com.example.repository.EmployeeRepository;
 
 @Service
 @Transactional
-public class EmployeeSevice {
+public class EmployeeService {
 
      @Autowired
     private EmployeeRepository repository;
@@ -32,6 +32,11 @@ public class EmployeeSevice {
 
         repository.update(employee);
 
+    }
+
+    public List<Employee> showList(){ //従業員一覧を全件抽出します。
+
+        return repository.findAll();
     }
 
 
